@@ -31,10 +31,11 @@ import ie.setu.donationx.ui.theme.DonationXTheme
 
 
 @Composable
-fun ReportScreen(modifier: Modifier = Modifier,
-                 onClickDonationDetails: (String) -> Unit,
-                 reportViewModel: ReportViewModel = hiltViewModel()) {
-
+fun ReportScreen(
+    modifier: Modifier = Modifier,
+    onClickDonationDetails: (String) -> Unit,
+    reportViewModel: ReportViewModel = hiltViewModel()
+) {
     val donations = reportViewModel.uiDonations.collectAsState().value
     val isError = reportViewModel.isErr.value
     val error = reportViewModel.error.value
@@ -51,10 +52,9 @@ fun ReportScreen(modifier: Modifier = Modifier,
                 end = 24.dp
             ),
         ) {
-            if(isLoading) ShowLoader("Loading Donations...")
+            if (isLoading) ShowLoader("Loading Donations...")
             ReportText()
-            if(!isError)
-                ShowRefreshList(onClick = { reportViewModel.getDonations() })
+            if (!isError) ShowRefreshList(onClick = { reportViewModel.getDonations() })
             if (donations.isEmpty() && !isError)
                 Centre(Modifier.fillMaxSize()) {
                     Text(
@@ -73,13 +73,18 @@ fun ReportScreen(modifier: Modifier = Modifier,
                     onDeleteDonation = { donation: DonationModel ->
                         reportViewModel.deleteDonation(donation)
                     },
+                    onEditDonation = { message, amount ->
+                        println("Editing donation: Message: $message, Amount: $amount")
+                    },
                     onRefreshList = { reportViewModel.getDonations() }
                 )
             }
             if (isError) {
-                ShowError(headline = error.message!! + " error...",
+                ShowError(
+                    headline = error.message!! + " error...",
                     subtitle = error.toString(),
-                    onClick = { reportViewModel.getDonations() })
+                    onClick = { reportViewModel.getDonations() }
+                )
             }
         }
     }
@@ -89,17 +94,18 @@ fun ReportScreen(modifier: Modifier = Modifier,
 @Composable
 fun ReportScreenPreview() {
     DonationXTheme {
-        PreviewReportScreen( modifier = Modifier,
+        PreviewReportScreen(
+            modifier = Modifier,
             donations = fakeDonations.toMutableStateList()
         )
     }
 }
 
 @Composable
-fun PreviewReportScreen(modifier: Modifier = Modifier,
-                        donations: SnapshotStateList<DonationModel>
+fun PreviewReportScreen(
+    modifier: Modifier = Modifier,
+    donations: SnapshotStateList<DonationModel>
 ) {
-
     Column {
         Column(
             modifier = modifier.padding(
@@ -108,9 +114,10 @@ fun PreviewReportScreen(modifier: Modifier = Modifier,
             ),
         ) {
             ReportText()
-            if(donations.isEmpty())
+            if (donations.isEmpty())
                 Centre(Modifier.fillMaxSize()) {
-                    Text(color = MaterialTheme.colorScheme.secondary,
+                    Text(
+                        color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
                         lineHeight = 34.sp,
@@ -121,9 +128,12 @@ fun PreviewReportScreen(modifier: Modifier = Modifier,
             else
                 DonationCardList(
                     donations = donations,
-                    onDeleteDonation = { },
-                    onClickDonationDetails = { },
-                    onRefreshList = { }
+                    onDeleteDonation = {},
+                    onClickDonationDetails = {},
+                    onEditDonation = { message, amount ->
+                        println("Editing donation in preview: Message: $message, Amount: $amount")
+                    },
+                    onRefreshList = {}
                 )
         }
     }

@@ -5,32 +5,13 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Business
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -56,6 +37,7 @@ fun DonationCard(
     onClickDelete: () -> Unit,
     onClickDonationDetails: () -> Unit,
     onRefreshList: () -> Unit,
+    onClickEdit: (String, Int) -> Unit
 ) {
     Card(
         border = BorderStroke(1.dp, Color.Black),
@@ -64,14 +46,17 @@ fun DonationCard(
         ),
         modifier = Modifier.padding(vertical = 2.dp, horizontal = 2.dp)
     ) {
-        DonationCardContent(paymentType,
+        DonationCardContent(
+            paymentType,
             paymentAmount,
             message,
             dateCreated,
             dateModified,
             onClickDelete,
             onClickDonationDetails,
-            onRefreshList)
+            onRefreshList,
+            onClickEdit
+        )
     }
 }
 
@@ -84,10 +69,14 @@ private fun DonationCardContent(
     dateModified: String,
     onClickDelete: () -> Unit,
     onClickDonationDetails: () -> Unit,
-    onRefreshList: () -> Unit
+    onRefreshList: () -> Unit,
+    onClickEdit: (String, Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
+    var currentMessage by remember { mutableStateOf(message) }
+    var currentAmount by remember { mutableStateOf(paymentAmount) }
 
     Row(
         modifier = Modifier
@@ -115,7 +104,7 @@ private fun DonationCardContent(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Filled.Business,
-                    "Donation Status",
+                    contentDescription = "Donation Status",
                     Modifier.padding(end = 8.dp)
                 )
                 Text(
@@ -146,17 +135,41 @@ private fun DonationCardContent(
                         Text(text = "Show More")
                     }
 
+                    // Edit Button
+                    FilledTonalIconButton(onClick = { showEditDialog = true }) {
+                        Icon(Icons.Filled.Edit, contentDescription = "Edit Donation")
+                    }
+
                     FilledTonalIconButton(onClick = {
                         showDeleteConfirmDialog = true
                     }) {
-                        Icon(Icons.Filled.Delete, "Delete Donation")
+                        Icon(Icons.Filled.Delete, contentDescription = "Delete Donation")
                     }
 
+                    // Show Delete
                     if (showDeleteConfirmDialog) {
                         showDeleteAlert(
                             onDismiss = { showDeleteConfirmDialog = false },
                             onDelete = onClickDelete,
                             onRefresh = onRefreshList
+                        )
+                    }
+
+                    // Show Edit Dialog
+                    if (showEditDialog) {
+                        EditDonationDialog(
+                            currentMessage,
+                            currentAmount,
+                            onDismiss = { showEditDialog = false },
+                            onEdit = { editedMessage, editedAmount ->
+                                currentMessage = editedMessage
+                                currentAmount = editedAmount
+
+                                // Perform the edit operation in the parent composable/viewmodel
+                                onClickEdit(editedMessage, editedAmount)
+
+                                showEditDialog = false // Close the dialog
+                            }
                         )
                     }
                 }
@@ -165,7 +178,7 @@ private fun DonationCardContent(
         IconButton(onClick = { expanded = !expanded }) {
             Icon(
                 imageVector = if (expanded) Icons.Filled.ExpandLess
-                                    else Icons.Filled.ExpandMore,
+                else Icons.Filled.ExpandMore,
                 contentDescription = if (expanded) {
                     stringResource(R.string.show_less)
                 } else {
@@ -177,29 +190,78 @@ private fun DonationCardContent(
 }
 
 @Composable
+fun EditDonationDialog(
+    currentMessage: String,
+    currentAmount: Int,
+    onDismiss: () -> Unit,
+    onEdit: (String, Int) -> Unit // Callback with new data to save
+) {
+    var editedMessage by remember { mutableStateOf(currentMessage) }
+    var editedAmount by remember { mutableStateOf(currentAmount.toString()) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Edit Donation") },
+        text = {
+            Column {
+                TextField(
+                    value = editedMessage,
+                    onValueChange = { editedMessage = it },
+                    label = { Text("Message") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = editedAmount,
+                    onValueChange = { editedAmount = it },
+                    label = { Text("Amount (€)") }
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    // Call the onEdit callback with the new data
+                    if (editedAmount.isNotEmpty() && editedMessage.isNotEmpty()) {
+                        onEdit(editedMessage, editedAmount.toInt())
+                    }
+                    onDismiss()
+                }
+            ) {
+                Text("Save")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) { Text("Cancel") }
+        }
+    )
+}
+
+@Composable
 fun showDeleteAlert(
     onDismiss: () -> Unit,
     onDelete: () -> Unit,
     onRefresh: () -> Unit
 ) {
     AlertDialog(
-        onDismissRequest = onDismiss ,
-        title = { Text(stringResource(id = R.string.confirm_delete)) },
-        text = { Text(stringResource(id = R.string.confirm_delete_message)) },
+        onDismissRequest = onDismiss,
+        title = { Text("Delete Donation") },
+        text = { Text("Are you sure you want to delete this donation?") },
         confirmButton = {
             Button(
                 onClick = {
                     onDelete()
                     onRefresh()
+                    onDismiss()
                 }
-            ) { Text("Yes") }
+            ) {
+                Text("Yes, Delete")
+            }
         },
         dismissButton = {
-            Button(onClick = onDismiss) { Text("No") }
+            Button(onClick = onDismiss) { Text("Cancel") }
         }
     )
 }
-
 
 @Preview
 @Composable
@@ -216,7 +278,8 @@ fun DonationCardPreview() {
             dateModified = DateFormat.getDateTimeInstance().format(Date()),
             onClickDelete = { },
             onClickDonationDetails = {},
-            onRefreshList = {  }
+            onRefreshList = {},
+            onClickEdit = { _, _ -> }
         )
     }
 }

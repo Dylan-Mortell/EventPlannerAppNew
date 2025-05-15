@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.Wallpapers
 import ie.setu.donationx.data.DonationModel
 import ie.setu.donationx.data.fakeDonations
 import ie.setu.donationx.ui.theme.DonationXTheme
@@ -18,6 +17,7 @@ internal fun DonationCardList(
     modifier: Modifier = Modifier,
     onDeleteDonation: (DonationModel) -> Unit,
     onClickDonationDetails: (String) -> Unit,
+    onEditDonation: (String, Int) -> Unit,
     onRefreshList: () -> Unit,
 ) {
     LazyColumn {
@@ -33,23 +33,25 @@ internal fun DonationCardList(
                 dateModified = DateFormat.getDateTimeInstance().format(donation.dateModified),
                 onClickDelete = { onDeleteDonation(donation) },
                 onClickDonationDetails = { onClickDonationDetails(donation._id) },
+                onClickEdit = { message, amount -> onEditDonation(message, amount) },
                 onRefreshList = onRefreshList
             )
         }
     }
 }
 
-@Preview(showBackground = true,
-    wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE
-)
+@Preview(showBackground = true)
 @Composable
 fun DonationCardListPreview() {
     DonationXTheme {
         DonationCardList(
-            fakeDonations.toMutableStateList(),
+            donations = fakeDonations.toMutableStateList(),
             onDeleteDonation = {},
             onClickDonationDetails = { },
+            onEditDonation = { message, amount ->
+                println("Editing donation: Message: $message, Amount: $amount")
+            },
             onRefreshList = { }
         )
     }
-    }
+}
