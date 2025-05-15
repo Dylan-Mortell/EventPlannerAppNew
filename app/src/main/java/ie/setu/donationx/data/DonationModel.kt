@@ -15,7 +15,7 @@ data class DonationModel(
     val paymentType: String = "N/A",
     @SerializedName("paymentamount")
     val paymentAmount: Int = 0,
-    var message: String = "Go Homer!",
+    var message: String = "Here is a donation!",
     @SerializedName("datedonated")
     val dateDonated: Date = Date(),
     @SerializedName("datemodified")

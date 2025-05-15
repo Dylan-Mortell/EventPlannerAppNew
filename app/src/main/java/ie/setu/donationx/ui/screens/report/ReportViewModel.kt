@@ -14,35 +14,28 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ReportViewModel @Inject
-constructor(private val repository: RetrofitRepository) : ViewModel() {
-    private val _donations
-            = MutableStateFlow<List<DonationModel>>(emptyList())
-    val uiDonations: StateFlow<List<DonationModel>>
-            = _donations.asStateFlow()
+class ReportViewModel @Inject constructor(private val repository: RetrofitRepository) : ViewModel() {
+
+    private val _donations = MutableStateFlow<List<DonationModel>>(emptyList())
+    val uiDonations: StateFlow<List<DonationModel>> = _donations.asStateFlow()
+
     var isErr = mutableStateOf(false)
     var isLoading = mutableStateOf(false)
     var error = mutableStateOf(Exception())
 
-//    init {
-//        viewModelScope.launch {
-//            repository.getAll().collect { listOfDonations ->
-//                _donations.value = listOfDonations
-//            }
-//        }
-//    }
+    init {
+        getDonations()
+    }
 
-    init { getDonations() }
-
+    // Fetch all donations
     fun getDonations() {
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                _donations.value = repository.getAll()
+                _donations.value = repository.getAll() // Fetch donations from the repository
                 isErr.value = false
                 isLoading.value = false
-            }
-            catch(e:Exception) {
+            } catch (e: Exception) {
                 isErr.value = true
                 isLoading.value = false
                 error.value = e
@@ -51,9 +44,60 @@ constructor(private val repository: RetrofitRepository) : ViewModel() {
         }
     }
 
+    // Create a new donation
+    fun createDonation(donation: DonationModel) {
+        viewModelScope.launch {
+            try {
+                isLoading.value = true
+                val donationWrapper = repository.insert(donation)
+
+                if (donationWrapper.data != null) {
+                    getDonations() // Refresh donations list after creating a new one
+                } else {
+                    Timber.e("Donation creation failed: ${donationWrapper.message}")
+                }
+
+                isErr.value = false
+                isLoading.value = false
+            } catch (e: Exception) {
+                isErr.value = true
+                isLoading.value = false
+                error.value = e
+                Timber.i("RVM Error ${e.message}")
+            }
+        }
+    }
+
+    // Update an existing donation
+    fun updateDonation(donation: DonationModel) {
+        viewModelScope.launch {
+            try {
+                isLoading.value = true
+                val donationWrapper = repository.update(donation)
+
+                if (donationWrapper.data != null) {
+                    getDonations() // Refresh donations list after updating the donation
+                } else {
+                    Timber.e("Donation update failed: ${donationWrapper.message}")
+                }
+
+                isErr.value = false
+                isLoading.value = false
+            } catch (e: Exception) {
+                isErr.value = true
+                isLoading.value = false
+                error.value = e
+                Timber.i("RVM Error ${e.message}")
+            }
+        }
+    }
+
+    // Delete a donation
     fun deleteDonation(donation: DonationModel) {
         viewModelScope.launch {
             repository.delete(donation)
+            getDonations() // Refresh donations list after deletion
         }
     }
 }
+

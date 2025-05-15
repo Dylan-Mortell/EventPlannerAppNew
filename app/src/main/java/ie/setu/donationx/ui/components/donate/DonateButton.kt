@@ -40,37 +40,16 @@ import timber.log.Timber
 fun DonateButton(
     modifier: Modifier = Modifier,
     donation: DonationModel,
-    donateViewModel: DonateViewModel = hiltViewModel(),
-    reportViewModel: ReportViewModel = hiltViewModel(),
-    onTotalDonatedChange: (Int) -> Unit
+    onDonateClick: () -> Unit,
+    totalDonated: Int
 ) {
-    val donations = reportViewModel.uiDonations.collectAsState().value
-    var totalDonated = donations.sumOf { it.paymentAmount }
-    val context = LocalContext.current
-    val message = stringResource(R.string.limitExceeded,donation.paymentAmount)
-
-    val isError = donateViewModel.isErr.value
-    val error = donateViewModel.error.value
-    val isLoading = donateViewModel.isLoading.value
-
-    if(isLoading) ShowLoader("Trying to Donate...")
-
     Row {
         Button(
-            onClick = {
-                if(totalDonated + donation.paymentAmount <= 10000) {
-                    totalDonated+=donation.paymentAmount
-                    onTotalDonatedChange(totalDonated)
-                    donateViewModel.insert(donation)
-                }
-                else
-                    Toast.makeText(context,message,
-                        Toast.LENGTH_SHORT).show()
-            },
+            onClick = onDonateClick,
             elevation = ButtonDefaults.buttonElevation(20.dp)
         ) {
             Icon(Icons.Default.Add, contentDescription = "Donate")
-            Spacer(modifier.width(width = 4.dp))
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = stringResource(R.string.donateButton),
                 fontWeight = FontWeight.Bold,
@@ -78,7 +57,9 @@ fun DonateButton(
                 color = Color.White
             )
         }
-        Spacer(modifier.weight(1f))
+
+        Spacer(modifier = Modifier.weight(1f))
+
         Text(
             buildAnnotatedString {
                 withStyle(
@@ -91,24 +72,18 @@ fun DonateButton(
                     append(stringResource(R.string.total) + " €")
                 }
 
-
                 withStyle(
                     style = SpanStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.secondary)
+                        color = MaterialTheme.colorScheme.secondary
+                    )
                 ) {
                     append(totalDonated.toString())
                 }
-            })
+            }
+        )
     }
-
-    //Required to refresh our 'totalDonated'
-    if(isError)
-        Toast.makeText(context,"Unable to Donate at this Time...",
-            Toast.LENGTH_SHORT).show()
-    else
-        reportViewModel.getDonations()
 }
 
 @Preview(showBackground = true)
