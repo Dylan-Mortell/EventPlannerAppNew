@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ie.setu.donationx.ui.screens.about.AboutScreen
+import ie.setu.donationx.ui.screens.budget.BudgetScreen
 import ie.setu.donationx.ui.screens.details.DetailsScreen
 import ie.setu.donationx.ui.screens.donate.DonateScreen
 import ie.setu.donationx.ui.screens.login.LoginScreen
@@ -80,6 +81,10 @@ fun NavHostProvider(
 
         composable(About.route) {
             AboutScreen(modifier = modifier)
+        }
+
+        composable(Budget.route) {
+            BudgetScreen(modifier = modifier)
         }
 
         composable(

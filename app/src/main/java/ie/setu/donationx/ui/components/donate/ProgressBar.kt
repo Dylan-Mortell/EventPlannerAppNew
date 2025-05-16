@@ -19,15 +19,19 @@ import androidx.compose.ui.unit.dp
 import ie.setu.donationx.ui.theme.DonationXTheme
 
 @Composable
-fun ProgressBar(modifier: Modifier = Modifier,
-                totalDonated: Int,) {
+fun ProgressBar(
+    modifier: Modifier = Modifier,
+    totalDonated: Int,
+    maxAmount: Int = 10000
+) {
     var currentProgress by remember { mutableFloatStateOf(0f) }
 
-    currentProgress = totalDonated / 10000f
+    currentProgress = totalDonated.toFloat() / maxAmount.toFloat()
 
     LinearProgressIndicator(
-        progress = { currentProgress },
-        modifier = modifier.padding(top = 80.dp,bottom = 24.dp)
+        progress = { currentProgress.coerceIn(0f, 1f) },
+        modifier = modifier
+            .padding(top = 80.dp, bottom = 24.dp)
             .height(8.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp)),
@@ -35,8 +39,8 @@ fun ProgressBar(modifier: Modifier = Modifier,
         trackColor = ProgressIndicatorDefaults.linearTrackColor,
         strokeCap = ProgressIndicatorDefaults.LinearStrokeCap
     )
-
 }
+
 
 @Preview(showBackground = true)
 @Composable

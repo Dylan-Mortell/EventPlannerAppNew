@@ -15,23 +15,27 @@ import ie.setu.donationx.ui.theme.DonationXTheme
 
 @Composable
 fun AmountPicker(
+    initialAmount: Int = 10,
     onPaymentAmountChange: (Int) -> Unit
 ) {
     val possibleValues = listOf("10", "20", "50", "100", "500", "1000")
-    var pickerValue by remember { mutableStateOf(possibleValues[0]) }
+    val initialValue = initialAmount.toString().takeIf { it in possibleValues } ?: possibleValues[0]
+
+    var pickerValue by remember { mutableStateOf(initialValue) }
 
     ListItemPicker(
         label = { it },
         dividersColor = MaterialTheme.colorScheme.primary,
-        textStyle = TextStyle(Color.Black,20.sp),
+        textStyle = TextStyle(Color.Black, 20.sp),
         value = pickerValue,
         onValueChange = {
             pickerValue = it
-            onPaymentAmountChange(pickerValue.toInt())
+            onPaymentAmountChange(it.toInt())
         },
         list = possibleValues
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable

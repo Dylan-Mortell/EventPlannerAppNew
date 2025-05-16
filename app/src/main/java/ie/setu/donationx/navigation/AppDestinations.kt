@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import androidx.compose.material.icons.filled.AttachMoney
+
 
 interface AppDestination {
     val icon: ImageVector
@@ -61,5 +63,11 @@ object Signup : AppDestination {
     override val route = "signup"
 }
 
-val bottomAppBarDestinations = listOf(Donate, Report, About)
+object Budget : AppDestination {
+    override val icon = Icons.Filled.AttachMoney
+    override val label = "Budget"
+    override val route = "budget"
+}
+
+val bottomAppBarDestinations = listOf(Donate, Report, About, Budget)
 val allDestinations = listOf(Login,Report, Donate, About, Details, Signup)
