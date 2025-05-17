@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.DonationX" parent="android:Theme.Material.Light.NoActionBar" />
+<!-- Base application theme -->
+<style name="Theme.DonationX" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- Customize your theme here -->
+    <item name="android:windowBackground">@color/background_color</item>
+    <item name="colorPrimary">@color/primary_color</item>
+    <item name="colorPrimaryVariant">@color/primary_variant_color</item>
+    <item name="colorOnPrimary">@color/on_primary_color</item>
+    <item name="colorSecondary">@color/secondary_color</item>
+    <item name="colorOnSecondary">@color/on_secondary_color</item>
+</style>
 </resources>

@@ -18,7 +18,7 @@
         <string name="show_more">Show More</string>
         <string name="empty_list">No Donations Yet - Go make a Donation!</string>
         <string name="about_title">A donation!!</string>
-        <string name="about_message">This is an event planner app. Please make a donation!</string>
+        <string name="about_message">This is an event planner app. Make a donation, set a budget and plan an event</string>
         <string name="confirm_delete">Confirm Delete?</string>
         <string name="confirm_delete_message">Are you sure you want to delete this donation?</string>
 

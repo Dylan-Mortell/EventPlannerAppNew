@@ -32,6 +32,11 @@ datastorePreferencesCoreAndroid = "1.1.6"
 datastorePreferencesCoreAndroidVersion = "1.1.6"
 datastorePreferencesCore = "1.0.0"
 
+androidx_material3 = "1.0.0"
+compose = "1.5.0"
+material3 = "1.0.0"
+material = "1.11.0-alpha01"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
@@ -79,6 +84,10 @@ androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-p
 # Hilt Core and Compiler
 hilt-core = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltAndroid" }
+
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

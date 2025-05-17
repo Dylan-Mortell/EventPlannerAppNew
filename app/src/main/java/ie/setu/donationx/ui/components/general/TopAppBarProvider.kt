@@ -25,8 +25,8 @@ import ie.setu.donationx.ui.theme.DonationXTheme
 fun TopAppBarProvider(
     currentScreen: AppDestination,
     canNavigateBack: Boolean,
-    navigateUp: () -> Unit = {})
-{
+    navigateUp: () -> Unit = {}
+) {
     TopAppBar(
         title = {
             Text(
@@ -47,17 +47,16 @@ fun TopAppBarProvider(
                         modifier = Modifier.size(30.dp)
                     )
                 }
-            }
-            else
+            } else {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Menu Button",
                     tint = Color.White,
                     modifier = Modifier.size(30.dp)
                 )
-
+            }
         },
-        actions = { DropDownMenu() }
+        actions = {}
     )
 }
 
