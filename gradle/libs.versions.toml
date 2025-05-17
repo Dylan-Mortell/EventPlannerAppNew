@@ -89,6 +89,12 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
+
+firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version = "21.6.1" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx", version = "25.0.0" }
+firebase-auth = "com.google.firebase:firebase-auth-ktx:22.3.1"
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -99,3 +105,6 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndro
 
 kotlin-android-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.9.24" }
+
+google-services = { id = "com.google.gms.google-services", version = "4.4.0" }
+

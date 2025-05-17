@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="ie.setu.donationx" />
+                  <option name="mobileSdkAppId" value="1:687054639830:android:86ced64db463d435122f77" />
+                  <option name="projectId" value="eventplannerapp-24f08" />
+                  <option name="projectNumber" value="687054639830" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

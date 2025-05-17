@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "687054639830",
+    "project_id": "eventplannerapp-24f08",
+    "storage_bucket": "eventplannerapp-24f08.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687054639830:android:86ced64db463d435122f77",
+        "android_client_info": {
+          "package_name": "ie.setu.donationx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf_K4n9BhfJmteE-bSlEsb6P0_MWSTs0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
