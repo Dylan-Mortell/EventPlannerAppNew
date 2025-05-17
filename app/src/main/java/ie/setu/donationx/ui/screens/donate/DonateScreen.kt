@@ -80,8 +80,8 @@ fun DonateScreen(
             onMessageChange = { paymentMessage = it }
         )
 
-        // Add Spacer to push the donate button up if needed
-        Spacer(modifier = Modifier.weight(1f))  // This spacer will push the button to the bottom
+
+        Spacer(modifier = Modifier.weight(1f))
 
         DonateButton(
             modifier = modifier,
@@ -164,7 +164,7 @@ fun PreviewDonateScreen(modifier: Modifier = Modifier,
                     paymentAmount = paymentAmount,
                     message = paymentMessage),
                 totalDonated = totalDonated,
-                onDonateClick = { /* Handle donation click in preview if needed */ }
+                onDonateClick = {  }
             )
         }
     }

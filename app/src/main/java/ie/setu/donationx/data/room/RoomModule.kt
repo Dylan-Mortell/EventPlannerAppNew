@@ -12,19 +12,30 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RoomModule {
+
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context):
-            AppDatabase =
-        Room.databaseBuilder(context, AppDatabase::class.java, "donation_database")
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
+        Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "donation_database"
+        )
             .fallbackToDestructiveMigration()
             .build()
 
     @Provides
-    fun provideDonationDAO(appDatabase: AppDatabase):
-            DonationDAO = appDatabase.getDonationDAO()
+    fun provideDonationDAO(appDatabase: AppDatabase): DonationDAO =
+        appDatabase.getDonationDAO()
 
     @Provides
-    fun provideRoomRepository(donationDAO: DonationDAO):
-            RoomRepository = RoomRepository(donationDAO)
+    fun provideEventDAO(appDatabase: AppDatabase): EventDAO =
+        appDatabase.getEventDAO()
+
+    @Provides
+    fun provideRoomRepository(
+        donationDAO: DonationDAO,
+        eventDAO: EventDAO
+    ): RoomRepository =
+        RoomRepository(donationDAO, eventDAO)
 }

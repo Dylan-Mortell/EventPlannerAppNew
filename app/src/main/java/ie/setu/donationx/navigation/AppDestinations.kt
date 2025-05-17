@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.Event
 
 
 interface AppDestination {
@@ -69,5 +70,11 @@ object Budget : AppDestination {
     override val route = "budget"
 }
 
-val bottomAppBarDestinations = listOf(Donate, Report, About, Budget)
+object EventPlanner : AppDestination {
+    override val icon = Icons.Filled.Event
+    override val label = "EventPlanner"
+    override val route = "EventPlanner"
+}
+
+val bottomAppBarDestinations = listOf(Donate, Report, About, Budget, EventPlanner)
 val allDestinations = listOf(Login,Report, Donate, About, Details, Signup)

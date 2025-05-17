@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.android.ksp)
+
 }
 
 android {

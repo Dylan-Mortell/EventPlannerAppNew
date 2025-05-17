@@ -11,6 +11,7 @@ import ie.setu.donationx.ui.screens.about.AboutScreen
 import ie.setu.donationx.ui.screens.budget.BudgetScreen
 import ie.setu.donationx.ui.screens.details.DetailsScreen
 import ie.setu.donationx.ui.screens.donate.DonateScreen
+import ie.setu.donationx.ui.screens.eventplanner.EventPlannerScreen
 import ie.setu.donationx.ui.screens.login.LoginScreen
 import ie.setu.donationx.ui.screens.report.ReportScreen
 import ie.setu.donationx.ui.screens.signup.SignupScreen
@@ -85,6 +86,11 @@ fun NavHostProvider(
 
         composable(Budget.route) {
             BudgetScreen(modifier = modifier)
+        }
+
+        // Added EventPlanner route
+        composable(EventPlanner.route) {
+            EventPlannerScreen()
         }
 
         composable(

@@ -24,7 +24,7 @@ fun BudgetScreen(
     modifier: Modifier = Modifier,
     budgetScreenViewModel: BudgetScreenViewModel = hiltViewModel()
 ) {
-    // Observe the current budget from ViewModel
+
     val currentBudget by budgetScreenViewModel.currentBudget.collectAsState(initial = 1000)
     val isLoading by budgetScreenViewModel.isLoading.collectAsState(initial = false)
     val isError by budgetScreenViewModel.isError.collectAsState(initial = false)
@@ -37,7 +37,6 @@ fun BudgetScreen(
 
     val context = LocalContext.current
 
-    // Show toast if remaining budget is negative
     if (remainingBudget < 0) {
         Toast.makeText(context, "You have exceeded your budget!", Toast.LENGTH_SHORT).show()
     }
@@ -90,7 +89,7 @@ fun BudgetScreen(
             )
         }
 
-        // Save Button (if needed)
+        // Save Button
         Button(
             onClick = {
                 if (remainingBudget >= 0) {

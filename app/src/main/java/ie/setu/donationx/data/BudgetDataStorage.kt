@@ -18,11 +18,9 @@ class BudgetDataStorage @Inject constructor(
     private val dataStore = context.budgetDataStore
 
     companion object {
-        // Use intPreferencesKey for integer values
         private val BUDGET_KEY = intPreferencesKey("BUDGET_KEY")
     }
 
-    // Flow to get the current budget, defaulting to 0 if not found
     val currentBudget: Flow<Int> = dataStore.data
         .map { preferences ->
             preferences[BUDGET_KEY] ?: 0
