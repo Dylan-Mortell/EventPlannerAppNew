@@ -11,6 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.Map
 
 
 interface AppDestination {
@@ -76,5 +77,20 @@ object EventPlanner : AppDestination {
     override val route = "EventPlanner"
 }
 
-val bottomAppBarDestinations = listOf(Donate, Report, About, Budget, EventPlanner)
-val allDestinations = listOf(Login,Report, Donate, About, Details, Signup)
+object Map : AppDestination {
+    override val icon = Icons.Default.Map
+    override val label = "Map"
+    override val route = "map"
+}
+
+object Invitation : AppDestination {
+    override val icon = Icons.Filled.Event
+    override val label = "Invitation"
+    override val route = "invitation"
+}
+
+
+
+
+val bottomAppBarDestinations = listOf(Donate, Report, About, Budget, EventPlanner, Map, Invitation)
+val allDestinations = listOf(Donate, Report, About, Budget, EventPlanner, Map, Invitation)

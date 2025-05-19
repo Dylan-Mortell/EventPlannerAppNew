@@ -12,10 +12,13 @@ import ie.setu.donationx.ui.screens.budget.BudgetScreen
 import ie.setu.donationx.ui.screens.details.DetailsScreen
 import ie.setu.donationx.ui.screens.donate.DonateScreen
 import ie.setu.donationx.ui.screens.eventplanner.EventPlannerScreen
+import ie.setu.donationx.ui.screens.invitation.InvitationScreen
 import ie.setu.donationx.ui.screens.login.LoginScreen
 import ie.setu.donationx.ui.screens.report.ReportScreen
 import ie.setu.donationx.ui.screens.signup.SignupScreen
 import ie.setu.donationx.ui.screens.splash.SplashScreen
+import ie.setu.donationx.ui.screens.map.MapScreen
+
 
 @Composable
 fun NavHostProvider(
@@ -98,7 +101,17 @@ fun NavHostProvider(
                 DetailsScreen()
             }
         }
+
+        composable(Map.route) {
+            MapScreen(modifier = modifier)
+        }
+
+        composable(Invitation.route) {
+            InvitationScreen()
+        }
+
     }
+
 }
 
 private fun NavHostController.navigateToDonationDetails(donationId: String) {

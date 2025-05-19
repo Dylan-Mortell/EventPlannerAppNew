@@ -37,6 +37,9 @@ compose = "1.5.0"
 material3 = "1.0.0"
 material = "1.11.0-alpha01"
 
+maps-compose = "4.2.0"
+play-services-maps = "18.2.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
@@ -93,6 +96,9 @@ material = { group = "com.google.android.material", name = "material", version.r
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx", version = "21.6.1" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx", version = "25.0.0" }
 firebase-auth = "com.google.firebase:firebase-auth-ktx:22.3.1"
+
+google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "maps-compose" }
+google-play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-services-maps" }
 
 
 [plugins]

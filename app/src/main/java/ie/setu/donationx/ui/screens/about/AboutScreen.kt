@@ -32,7 +32,7 @@ fun AboutScreen(modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.secondary)
+            .background(Color.White)  // Change the background color to white
             .verticalScroll(scrollState) // scroll modifier
     ) {
         Centre(
@@ -49,7 +49,7 @@ fun AboutScreen(modifier: Modifier = Modifier) {
 
         Centre(Modifier.fillMaxSize()) {
             Text(
-                color = Color.White,
+                color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp,
                 lineHeight = 34.sp,

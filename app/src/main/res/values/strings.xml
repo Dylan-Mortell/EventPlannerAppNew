@@ -21,5 +21,6 @@
         <string name="about_message">This is an event planner app. Make a donation, set a budget and plan an event</string>
         <string name="confirm_delete">Confirm Delete?</string>
         <string name="confirm_delete_message">Are you sure you want to delete this donation?</string>
+        <string name="google_maps_key">AIzaSyB4n-HXkTthdqaidVRzRIS2rnRth8SgacI</string>
 
 </resources>

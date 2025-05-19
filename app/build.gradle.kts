@@ -111,5 +111,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
 
+    implementation(libs.google.maps.compose)
+    implementation(libs.google.play.services.maps)
 
 }
