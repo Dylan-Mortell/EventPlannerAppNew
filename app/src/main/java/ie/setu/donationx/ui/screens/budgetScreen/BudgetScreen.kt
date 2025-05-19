@@ -41,7 +41,6 @@ fun BudgetScreen(
         Toast.makeText(context, "You have exceeded your budget!", Toast.LENGTH_SHORT).show()
     }
 
-    // Set up scroll state for the column
     val scrollState = rememberScrollState()
 
     // Update the UI

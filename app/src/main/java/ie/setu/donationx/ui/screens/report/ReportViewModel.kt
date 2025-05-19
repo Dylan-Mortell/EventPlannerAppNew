@@ -32,7 +32,7 @@ class ReportViewModel @Inject constructor(private val repository: RetrofitReposi
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                _donations.value = repository.getAll() // Fetch donations from the repository
+                _donations.value = repository.getAll()
                 isErr.value = false
                 isLoading.value = false
             } catch (e: Exception) {
@@ -52,7 +52,7 @@ class ReportViewModel @Inject constructor(private val repository: RetrofitReposi
                 val donationWrapper = repository.insert(donation)
 
                 if (donationWrapper.data != null) {
-                    getDonations() // Refresh donations list after creating a new one
+                    getDonations()
                 } else {
                     Timber.e("Donation creation failed: ${donationWrapper.message}")
                 }
@@ -96,7 +96,7 @@ class ReportViewModel @Inject constructor(private val repository: RetrofitReposi
     fun deleteDonation(donation: DonationModel) {
         viewModelScope.launch {
             repository.delete(donation)
-            getDonations() // Refresh donations list after deletion
+            getDonations()
         }
     }
 }

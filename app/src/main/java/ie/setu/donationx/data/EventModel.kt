@@ -7,8 +7,8 @@ import java.util.Date
 @Entity
 data class EventModel(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0, // Unique ID for each event
-    val eventName: String = "Unnamed Event", // Name of the event
+    val id: Long  = 0,
+    val eventName: String = "Unnamed Event",
     val eventDate: Date = Date(),
     val createdAt: Date = Date(),
     val latitude: Double = 0.0,

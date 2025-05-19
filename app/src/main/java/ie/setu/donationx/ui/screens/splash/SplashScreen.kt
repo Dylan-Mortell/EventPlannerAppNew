@@ -35,7 +35,7 @@ fun SplashScreen(onTimeout: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "DonationX",
+                text = "EventPlanner",
                 fontSize = 32.sp,
                 color = MaterialTheme.colorScheme.onPrimary
             )

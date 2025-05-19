@@ -140,7 +140,5 @@ fun UtilsPreview() {
     DonationXTheme {
         ShowError(headline = "Main Error Message",
             subtitle = "more error information", onClick = {})
-        //   ShowLoader()
-        //   ShowRefreshList(onClick = {})
     }
 }

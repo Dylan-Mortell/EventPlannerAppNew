@@ -17,7 +17,7 @@ interface EventDAO {
     fun getAllEvents(): Flow<List<EventModel>>
 
     @Query("SELECT * FROM eventmodel WHERE id = :id")
-    fun getEventById(id: Int): Flow<EventModel>
+    fun getEventById(id: Long): Flow<EventModel>
 
     @Update
     suspend fun updateEvent(event: EventModel)
@@ -25,4 +25,7 @@ interface EventDAO {
     @Delete
     suspend fun delete(event: EventModel)
 
+    @Query("DELETE FROM eventmodel WHERE id = :eventId")
+    suspend fun deleteEventById(eventId: Long)
 }
+

@@ -10,7 +10,6 @@ class RoomRepository @Inject constructor(
     private val eventDAO: EventDAO
 ) {
 
-    //  Donations
     fun getAllDonations(): Flow<List<DonationModel>> = donationDAO.getAll()
 
     fun getDonation(id: Int) = donationDAO.get(id)
@@ -30,7 +29,7 @@ class RoomRepository @Inject constructor(
     // events
     fun getAllEvents(): Flow<List<EventModel>> = eventDAO.getAllEvents()
 
-    fun getEvent(id: Int): Flow<EventModel> = eventDAO.getEventById(id)
+    fun getEvent(id: Long): Flow<EventModel> = eventDAO.getEventById(id)
 
     suspend fun insertEvent(event: EventModel) {
         eventDAO.insert(event)
@@ -39,4 +38,9 @@ class RoomRepository @Inject constructor(
     suspend fun updateEvent(event: EventModel) {
         eventDAO.updateEvent(event)
     }
+
+    suspend fun deleteEventById(eventId: Long) {
+        eventDAO.deleteEventById(eventId)
+    }
+
 }

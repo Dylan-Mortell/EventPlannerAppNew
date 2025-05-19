@@ -40,15 +40,14 @@ fun DonationXTheme(
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    // Determine the appropriate color scheme based on the system's dark mode preference
+
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            // Use dynamic color scheme if the device supports it and dark mode is enabled
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> DarkColorScheme // Use dark color scheme if dark mode is enabled
-        else -> LightColorScheme // Use light color scheme if dark mode is not enabled
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
     }
 
     // Apply the selected color

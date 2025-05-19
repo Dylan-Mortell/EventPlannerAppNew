@@ -102,7 +102,7 @@ fun EventPlannerScreen(
                 .height(250.dp)
                 .padding(16.dp),
             cameraPositionState = cameraPositionState,
-            onMapClick = onMapClick // Set the click listener to update location
+            onMapClick = onMapClick
         ) {
             eventLocation?.let {
                 Marker(
@@ -113,7 +113,6 @@ fun EventPlannerScreen(
             }
         }
 
-        // Display selected location information
         eventLocation?.let {
             Text("Selected Location: Lat: ${it.latitude}, Lng: ${it.longitude}", style = MaterialTheme.typography.bodyLarge)
         }
@@ -123,7 +122,7 @@ fun EventPlannerScreen(
         // Save or Update Event Button
         Button(
             onClick = {
-                viewModel.saveEvent() // Save event with location
+                viewModel.saveEvent()
                 Toast.makeText(
                     context,
                     if (currentEvent == null) "Event saved!" else "Event updated!",
@@ -165,7 +164,7 @@ fun EventPlannerScreen(
                 // Delete Button
                 IconButton(
                     onClick = {
-                        viewModel.deleteEvent(event)  // Delete event
+                        viewModel.deleteEvent(event)
                         Toast.makeText(context, "Event deleted!", Toast.LENGTH_SHORT).show()
                     }
                 ) {

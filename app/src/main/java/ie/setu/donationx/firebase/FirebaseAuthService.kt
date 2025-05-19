@@ -14,7 +14,6 @@ class FirebaseAuthService @Inject constructor(
 
     override suspend fun login(email: String, password: String): Result<Unit> {
         return try {
-            // Attempt to sign in with email and password using Firebase Authentication
             firebaseAuth.signInWithEmailAndPassword(email, password).await()
             Result.success(Unit)
         } catch (e: Exception) {
