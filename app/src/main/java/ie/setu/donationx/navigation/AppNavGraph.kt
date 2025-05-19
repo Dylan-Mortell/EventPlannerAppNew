@@ -28,7 +28,6 @@ fun NavHostProvider(
         startDestination = Splash.route,
         modifier = Modifier.padding(paddingValues)
     ) {
-        // Splash → Login
         composable(Splash.route) {
             SplashScreen {
                 navController.navigate(Login.route) {
@@ -37,10 +36,9 @@ fun NavHostProvider(
             }
         }
 
-        // Login → Report or Signup
         composable(Login.route) {
             LoginScreen(
-                onLoginClick = { username, password ->
+                onLoginSuccess = {
                     navController.navigate(Report.route) {
                         popUpTo(Login.route) { inclusive = true }
                     }
@@ -51,7 +49,6 @@ fun NavHostProvider(
             )
         }
 
-        // Signup → Login
         composable(Signup.route) {
             SignupScreen(
                 onSignupSuccess = {
@@ -88,9 +85,8 @@ fun NavHostProvider(
             BudgetScreen(modifier = modifier)
         }
 
-        // Added EventPlanner route
         composable(EventPlanner.route) {
-            EventPlannerScreen()
+            EventPlannerScreen(modifier = modifier)
         }
 
         composable(

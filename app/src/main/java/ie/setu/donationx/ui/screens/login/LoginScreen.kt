@@ -1,3 +1,4 @@
+// LoginScreen.kt
 package ie.setu.donationx.ui.screens.login
 
 import androidx.compose.foundation.background
@@ -14,15 +15,32 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ie.setu.donationx.firebase.AuthViewModel
 
 @Composable
 fun LoginScreen(
-    onLoginClick: (username: String, password: String) -> Unit,
-    onSignupClick: () -> Unit
+    onLoginSuccess: () -> Unit,
+    onSignupClick: () -> Unit,
+    viewModel: AuthViewModel = viewModel()
 ) {
-    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
+    val loginResult by viewModel.loginResult.collectAsState()
+
+    LaunchedEffect(loginResult) {
+        loginResult?.let {
+            if (it.isSuccess) {
+                onLoginSuccess()
+            } else {
+                showError = true
+                errorMessage = it.exceptionOrNull()?.message ?: "Login failed"
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -49,27 +67,25 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Username Input
             OutlinedTextField(
-                value = username,
+                value = email,
                 onValueChange = {
-                    username = it
+                    email = it
                     showError = false
                 },
-                label = { Text("Username") },
+                label = { Text("Email") },
                 leadingIcon = {
-                    Icon(imageVector = Icons.Default.Person, contentDescription = "Username")
+                    Icon(imageVector = Icons.Default.Person, contentDescription = "Email")
                 },
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                isError = showError && username.isBlank()
+                isError = showError && email.isBlank()
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Password Input
             OutlinedTextField(
                 value = password,
                 onValueChange = {
@@ -88,14 +104,24 @@ fun LoginScreen(
                 isError = showError && password.isBlank()
             )
 
+            if (showError) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+
             Spacer(modifier = Modifier.height(30.dp))
 
             Button(
                 onClick = {
-                    if (username.isBlank() || password.isBlank()) {
+                    if (email.isBlank() || password.isBlank()) {
                         showError = true
+                        errorMessage = "Please enter both fields."
                     } else {
-                        onLoginClick(username, password)
+                        viewModel.loginUser(email.trim(), password.trim())
                     }
                 },
                 modifier = Modifier
@@ -116,7 +142,6 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-
         }
     }
 }

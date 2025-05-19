@@ -7,19 +7,38 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ie.setu.donationx.firebase.AuthViewModel
 
 @Composable
 fun SignupScreen(
     onSignupSuccess: () -> Unit,
-    onLoginClick: () -> Unit
+    onLoginClick: () -> Unit,
+    viewModel: AuthViewModel = viewModel()
 ) {
-    val username = remember { mutableStateOf(TextFieldValue()) }
-    val password = remember { mutableStateOf(TextFieldValue()) }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var showError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
+    val signupResult by viewModel.loginResult.collectAsState()
+
+    //  Observe the signup result
+    LaunchedEffect(signupResult) {
+        signupResult?.let {
+            if (it.isSuccess) {
+                onSignupSuccess()
+            } else {
+                showError = true
+                errorMessage = it.exceptionOrNull()?.message ?: "Signup failed"
+            }
+            viewModel.resetLoginResult() // Reset after each attempt
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -46,30 +65,54 @@ fun SignupScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             OutlinedTextField(
-                value = username.value,
-                onValueChange = { username.value = it },
-                label = { Text("Username") },
+                value = email,
+                onValueChange = {
+                    email = it
+                    showError = false
+                },
+                label = { Text("Email") },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                isError = showError && email.isBlank()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
-                value = password.value,
-                onValueChange = { password.value = it },
+                value = password,
+                onValueChange = {
+                    password = it
+                    showError = false
+                },
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                isError = showError && password.isBlank()
             )
+
+            if (showError) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = errorMessage,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = {
-                    // Save user or validate input here if needed
-                    onSignupSuccess()
+                    if (email.isBlank() || password.isBlank()) {
+                        showError = true
+                        errorMessage = "Fields cannot be empty"
+                    } else if (password.length < 6) {
+                        showError = true
+                        errorMessage = "Password must be at least 6 characters"
+                    } else {
+                        viewModel.registerUser(email.trim(), password.trim())
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
